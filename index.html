@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL Maze</title>
+    <script src="js/three.min.js"></script>
+    <script src="js/maze.js"></script>
+    <style>
+      body{
+        margin:0px;
+        overflow:hidden;
+      }
+      p{
+        font-family:Verdana;
+        color:#fff;
+        font-size:9px;      
+        margin:0px;
+        padding:5px;      
+      }
+      #credit{
+        position:absolute;
+        top:0px;
+        width:100%;
+      }
+      
+
+    </style>
+  </head>
+  <body scroll="no">
+    <p id="credit">WebGL Maze - by Andrew Jobson October 2014</p>
+
+    <div id="container"></div>
+    <script>
+
+    var _cam = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var _webgl = new THREE.WebGLRenderer();
+    var _walker;
+    var _mazeRenderer;
+    
+    _webgl.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('container').appendChild(_webgl.domElement);
+    
+    window.addEventListener('resize', function(){
+      _cam.aspect = window.innerWidth / window.innerHeight;
+      _cam.updateProjectionMatrix();
+      _webgl.setSize(window.innerWidth, window.innerHeight);
+    }, false);
+    
+    buildScene();
+    requestAnimationFrame(render);
+    animate();
+
+    function buildScene(){
+    
+      var maze = new Maze(8,10);
+      
+      _mazeRenderer = new MazeRenderer(maze, new THREE.Scene());
+      
+      _walker = new MazeWalker({
+        cam:_cam,
+        path:maze.path,
+        cellWidth:5
+      });
+    }
+    
+    function render(){
+      _webgl.render(_mazeRenderer.getScene(), _cam);
+    }
+    
+    function animate(){
+      render();
+      if(_walker.atGoal){
+        _mazeRenderer.resizeWalls(-0.01);
+        if(!_mazeRenderer.wallsUp)
+          buildScene();
+      }
+        
+      _walker.advance();
+      requestAnimationFrame(animate);
+    }
+    
+    </script>
+  </body>
+</html>
