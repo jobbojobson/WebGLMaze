@@ -1,7 +1,7 @@
 # WebGLMaze
 A 3D maze animation using THREE.js
 
-This is intented to be a WebGL clone of the classic Windows 95 screensaver "3D Maze" and in its current state is is not exactly that, but it's close. It's novel enough to share with the world.
+This is intented to be a WebGL clone of the classic Windows 95 screensaver "3D Maze" and in its current state it is not exactly that, but it's close. And it's novel enough to share with the world.
 
 It generates mazes and then solves them using Tremaux's algorithm
 
